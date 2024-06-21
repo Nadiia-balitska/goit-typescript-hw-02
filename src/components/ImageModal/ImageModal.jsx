@@ -24,7 +24,7 @@ export const ImageModal = ({ modalIsOpen, closeModal, selectImg }) => {
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         style={customStyles}
-        contentLabel="Example Modal"
+        contentLabel="Image Modal"
       >
         <img src={selectImg?.src} alt={selectImg?.alt} />
       </Modal>

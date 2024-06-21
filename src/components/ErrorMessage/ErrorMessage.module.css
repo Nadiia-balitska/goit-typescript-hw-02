@@ -1,0 +1,15 @@
+/* src/components/ErrorMessage/ErrorMessage.module.css */
+.title {
+  color: red;
+  font-size: 18px;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.top {
+  margin-top: 0;
+}
+
+.bottom {
+  margin-bottom: 0;
+}

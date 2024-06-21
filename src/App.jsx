@@ -14,7 +14,6 @@ import { ImageGallery } from "./components/ImageGallery/ImageGallery";
 import { LoadMoreBtn } from "./components/LoadMoreBtn/LoadMoreBtn";
 import { Loader } from "./components/Loader/Loader";
 import { SearchBar } from "./components/SearchBar/SearchBar";
-
 import { getPhotosByQuery } from "./components/photoApi";
 
 function App() {
@@ -28,36 +27,42 @@ function App() {
   const [selectImg, setSelectImg] = useState(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
 
+  console.log(query);
   useEffect(() => {
     if (!query) return;
+
     const getData = async () => {
       try {
         setIsLoading(true);
-        const { photos, total_result, per_page } = await getPhotosByQuery(
-          query,
-          page
-        );
-        if (!total_result) {
+        const { results, total } = await getPhotosByQuery({ query, page });
+
+        if (!total) {
           setIsEmpty(true);
           return;
         }
-        setPhotos((prev) => [...prev, ...photos]);
-        setShowLoadMore(page < Math.ceil(total_result / per_page));
+
+        setPhotos((prev) => [...prev, ...results]);
+        setShowLoadMore(page < Math.ceil(total / 15));
       } catch (error) {
+        console.log(error);
         setError(error.message);
       } finally {
         setIsLoading(false);
       }
     };
+
     getData();
   }, [query, page]);
 
-  const onSubmit = (query) => {
-    setQuery(query);
+  const onSubmit = (newQuery) => {
+    if (newQuery === query) return;
+
+    setQuery(newQuery);
     setPhotos([]);
     setPage(1);
     setShowLoadMore(false);
     setIsEmpty(false);
+    setError(null);
   };
 
   const handleLoadMore = () => {
@@ -73,7 +78,7 @@ function App() {
   };
 
   return (
-    <>
+    <div>
       <SearchBar onSubmit={onSubmit} />
       {photos.length > 0 && (
         <ImageGallery photos={photos} handleModalOpen={handleModalOpen} />
@@ -86,12 +91,14 @@ function App() {
       )}
       {isLoading && <Loader />}
       {error && <ErrorMessage title={`Something went wrong ${error}`} />}
-      <ImageModal
-        modalIsOpen={isOpenModal}
-        closeModal={closeModal}
-        selectImg={selectImg}
-      />
-    </>
+      {isOpenModal && (
+        <ImageModal
+          modalIsOpen={isOpenModal}
+          closeModal={closeModal}
+          selectImg={selectImg}
+        />
+      )}
+    </div>
   );
 }
 
