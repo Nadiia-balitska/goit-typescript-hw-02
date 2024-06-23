@@ -1,6 +1,8 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import s from "./SearchBar.module.css";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const initialValues = { text: "" };
 
@@ -13,6 +15,11 @@ const validationSchema = Yup.object().shape({
 
 export const SearchBar = ({ onSubmit }) => {
   const submitForm = (value, actions) => {
+    if (!value.text.trim()) {
+      toast.error("Enter searched word");
+      return;
+    }
+
     onSubmit(value.text);
     actions.resetForm();
   };
