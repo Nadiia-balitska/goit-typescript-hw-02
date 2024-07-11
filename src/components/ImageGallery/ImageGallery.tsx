@@ -1,7 +1,16 @@
+import { Photo } from "../../types";
 import { ImageCard } from "../ImageCard/ImageCard";
 import css from "./ImageGallery.module.css";
 
-export const ImageGallery = ({ photos, handleModalOpen }) => {
+interface ImageGalleryProps {
+  photos: Photo[];
+  handleModalOpen: (img: { alt: string; src: string }) => void;
+}
+
+export const ImageGallery: React.FC<ImageGalleryProps> = ({
+  photos,
+  handleModalOpen,
+}) => {
   return (
     <ul className={css.list}>
       {photos.map((photo) => (

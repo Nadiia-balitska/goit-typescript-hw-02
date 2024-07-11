@@ -15,17 +15,18 @@ import { LoadMoreBtn } from "./components/LoadMoreBtn/LoadMoreBtn";
 import { Loader } from "./components/Loader/Loader";
 import { SearchBar } from "./components/SearchBar/SearchBar";
 import { getPhotosByQuery } from "./components/photoApi";
+import { Photo, SelectImg } from "./types";
 
 function App() {
-  const [query, setQuery] = useState("");
-  const [page, setPage] = useState(1);
-  const [photos, setPhotos] = useState([]);
-  const [showLoadMore, setShowLoadMore] = useState(false);
-  const [isEmpty, setIsEmpty] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [selectImg, setSelectImg] = useState(null);
-  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [query, setQuery] = useState<string>("");
+  const [page, setPage] = useState<number>(1);
+  const [photos, setPhotos] = useState<Photo[]>([]);
+  const [showLoadMore, setShowLoadMore] = useState<boolean>(false);
+  const [isEmpty, setIsEmpty] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [selectImg, setSelectImg] = useState<SelectImg | null>(null);
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
 
   console.log(query);
   useEffect(() => {
@@ -43,7 +44,7 @@ function App() {
 
         setPhotos((prev) => [...prev, ...results]);
         setShowLoadMore(page < Math.ceil(total / 15));
-      } catch (error) {
+      } catch (error: any) {
         console.log(error);
         setError(error.message);
       } finally {
@@ -54,7 +55,7 @@ function App() {
     getData();
   }, [query, page]);
 
-  const onSubmit = (newQuery) => {
+  const onSubmit = (newQuery: string) => {
     if (newQuery === query) return;
 
     setQuery(newQuery);
@@ -68,7 +69,7 @@ function App() {
   const handleLoadMore = () => {
     setPage((prev) => prev + 1);
   };
-  const handleModalOpen = (img) => {
+  const handleModalOpen = (img: SelectImg) => {
     setIsOpenModal(true);
     setSelectImg(img);
   };

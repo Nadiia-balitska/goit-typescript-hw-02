@@ -4,7 +4,14 @@ import s from "./SearchBar.module.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const initialValues = { text: "" };
+interface InitValues {
+  text: string;
+}
+interface SearchBarProps {
+  onSubmit: (text: any) => void;
+}
+
+const initialValues: InitValues = { text: "" };
 
 const validationSchema = Yup.object().shape({
   text: Yup.string()
@@ -13,8 +20,8 @@ const validationSchema = Yup.object().shape({
     .required("Enter Text"),
 });
 
-export const SearchBar = ({ onSubmit }) => {
-  const submitForm = (value, actions) => {
+export const SearchBar: React.FC<SearchBarProps> = ({ onSubmit }) => {
+  const submitForm = (value: InitValues, actions: any) => {
     if (!value.text.trim()) {
       toast.error("Enter searched word");
       return;
